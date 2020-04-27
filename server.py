@@ -128,7 +128,7 @@ def run():
     logService.info('Instance {0} start successfully'.format(SERVER_PORT))
     print('Instance {0} start successfully'.format(SERVER_PORT))
     server.bind(SERVER_PORT)
-    server.start(8)
+    server.start(3)
     tornado.ioloop.IOLoop.instance().start()
 
 
