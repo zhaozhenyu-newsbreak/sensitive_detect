@@ -3,3 +3,4 @@ ConcurrentLogHandler==0.9.1
 numpy==1.17.0
 sklearn==0.0
 tornado==6.0.4
+requests==2.19.1

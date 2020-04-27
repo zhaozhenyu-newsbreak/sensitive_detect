@@ -6,4 +6,3 @@ ADD . /app
 
 RUN pip install -r environment.txt
 
-CMD ["python", "server.py"]
