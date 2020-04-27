@@ -26,7 +26,7 @@ import process
 model = pickle.load(open('./model/GBDT.MODEL4','rb'))
 stopwords = process.get_local_diction('./dict/stopword_en.txt')
 idf_dict = process.get_value_dict('./dict/idf.dict')
-embedding = process.get_embedding_dict('../top50w.embedding',300)
+embedding = process.get_embedding_dict('/mnt/nlp/big_sources/top50w.embedding',300)
 forbidden_strict = process.ngram_dict('./dict/forbidden_strict')
 forbidden_nostrict = process.ngram_dict('./dict/forbidden_nostrict')
 cate_dict = process.get_local_diction('./dict/cate_dict')
