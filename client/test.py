@@ -20,6 +20,8 @@ start = time.time()
 for lines in open(test_file):
     data = lines.strip().split('\t')
     docinfo = json.loads(data[1])
+    docinfo['seg_title'] = docinfo['title']
+    docinfo['seg_content'] = docinfo['content']
     return_info = requests.post(url_prefix,json = docinfo)
     return_dict = json.loads(return_info.text)
     print(str(return_dict['label'])+'\t'+json.dumps(return_dict))
