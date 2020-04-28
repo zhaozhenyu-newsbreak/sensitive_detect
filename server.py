@@ -68,6 +68,8 @@ class ProcessHandler(tornado.web.RequestHandler):
             category = data_dict.get('text_category')
             if category == None:
                 category = {}
+            else:
+                category = json.loads(category)
             url = data_dict.get('url')
             if url == None:
                 url = ''
@@ -87,7 +89,7 @@ class ProcessHandler(tornado.web.RequestHandler):
             logError.error('server\t%s\t%s' % (docid, str(msg)))
             logOutput.info('server\t%s\t%s' % (docid, response_dict_string))
             self.finish(response_dict_string)
-
+''''
     def get(self):
         response_dict = {'code': -1,'label':0,'score':'0.0','keywords':[]}
         docid = 'no_id'
@@ -114,7 +116,7 @@ class ProcessHandler(tornado.web.RequestHandler):
             logError.error('server\t%s\t%s' % (docid, str(msg)))
             logOutput.info('server\t%s\t%s' % (docid, response_dict_string))
             self.finish(response_dict_string)
-
+'''
 def run():
     app = tornado.web.Application(
         [
