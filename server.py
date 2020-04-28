@@ -68,7 +68,7 @@ class ProcessHandler(tornado.web.RequestHandler):
             category = data_dict.get('text_category')
             if category == None:
                 category = {}
-            else:
+            elif type(category)==type(''):
                 category = json.loads(category)
             url = data_dict.get('url')
             if url == None:
