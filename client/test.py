@@ -11,7 +11,9 @@ import requests
 import json
 import time
 
-url_prefix = 'http://0.0.0.0:9111/api/v0/sensitive'
+#url_prefix = 'http://172.31.142.68:9111/api/v0/sensitive'
+url_prefix = 'http://sensitive-detect.default.svc.k8sc1.nb.com:9111/api/v0/sensitive'
+#url_prefix = 'http://0.0.0.0:9111/api/v0/sensitive'
 
 test_file = sys.argv[1]
 
