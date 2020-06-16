@@ -30,6 +30,8 @@ embedding = process.get_embedding_dict('./dict/idf.embedding',300)
 #embedding = process.get_embedding_dict('/mnt/nlp/big_sources/top50w.embedding',300)
 forbidden_strict = process.ngram_dict('./dict/forbidden_strict')
 forbidden_nostrict = process.ngram_dict('./dict/forbidden_nostrict')
+#标题见到就删
+forbidden_ex = process.ngram_dict('./dict/forbidden_ex')
 cate_dict = process.get_local_diction('./dict/cate_dict')
 
 
@@ -76,7 +78,7 @@ class ProcessHandler(tornado.web.RequestHandler):
             args_dict = {'docid':docid,'title':title,'category':category,'url':url}
             logArgs.info(str(args_dict))
             #process
-            result = process.process(model,idf_dict,embedding,300,content,category,title,url,forbidden_strict,forbidden_nostrict,cate_dict,stopwords)
+            result = process.process(model,idf_dict,embedding,300,content,category,title,url,forbidden_strict,forbidden_nostrict,cate_dict,stopwords,forbidden_ex)
             #result
             result["code"] = 0
             result["docid"] = docid

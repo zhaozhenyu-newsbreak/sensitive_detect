@@ -43,8 +43,8 @@ def get_value_dict(path):
 def ngram_dict(path):
     res = {}
     for lines in open(path):
-        data = lines.strip().split(' ')
-        res[data[0]] = data[1:]
+        data = lines.strip()
+        res[data] = 1
     return res
 
 def get_word_dict(words,stopwords):
@@ -66,26 +66,14 @@ def get_word_dict(words,stopwords):
 
 def is_in_ngram(words,dic):
     res = {}
-    cur = 0
-    while cur < len(words):
-        word = words[cur]
+    for word in words:
         if word in dic:
-            flag = True
-            for j in range(len(dic[word])):
-                if j+cur+1 <len(words):
-                    if words[j+cur+1]!=dic[word][j]:
-                        flag = False
-                        break
-                else:
-                    flag = False
-                    break
-            if flag:
-                res[(word+' '+' '.join(dic[word])).strip()] = 1
-                cur = cur+1+len(dic[word])
-            else:
-                cur +=1
-        else:
-            cur +=1
+            res[word] = 1
+    doc = ' '.join(words)
+    for key in dic:
+        if len(key.split(' '))>1:
+            if key in doc:
+                res[key] = 1
     return res
 
 
@@ -137,12 +125,16 @@ def get_keywords_flag(content_keywords,title_keywords):
         return 3
 
 
-def judge(content_keywords,title_keywords,py):
+def judge(content_keywords,title_keywords,forbidden_ex,py):
     t_s = len(title_keywords['strict'])
     t_n = len(title_keywords['nostrict'])
     c_s = len(content_keywords['strict'])
     c_n = len(content_keywords['nostrict'])
-
+    for k in forbidden_ex:
+        if k in title_keywords['strict']:
+            return 1
+        elif k in title_keywords['nostrict']:
+            return 1
 
     if py>0.5 and t_s+t_n+c_s+c_n >0:
         if py>0.9:
@@ -152,7 +144,7 @@ def judge(content_keywords,title_keywords,py):
     return 0
 
 
-def process(model,idf_dict,embedding,dim,content,category,title,url,forbidden_strict,forbidden_nostrict,cate_dict,stopwords):
+def process(model,idf_dict,embedding,dim,content,category,title,url,forbidden_strict,forbidden_nostrict,cate_dict,stopwords,fobidden_ex):
     '''
     main processing function：
     idf_dict:idf weighting，dict
@@ -176,13 +168,12 @@ def process(model,idf_dict,embedding,dim,content,category,title,url,forbidden_st
     input_x.extend(get_embedding_feature(url_words,embedding,dim,idf_dict))
     cate_fea,flag = get_category_onehot(category,cate_dict)
     input_x.extend(cate_fea)
-    
     #keywords_flag = get_keywords_flag(content_keywords,title_keywords)
 
     #predict
     py = model.predict_proba([input_x])[0][1]
 
-    label = judge(content_keywords,title_keywords,py)
+    label = judge(content_keywords,title_keywords,fobidden_ex,py)
     #犯罪类，政府类排除
     if flag:
         label = 0
