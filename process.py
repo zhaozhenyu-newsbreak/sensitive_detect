@@ -9,7 +9,24 @@
 import sys
 import re
 import numpy as np
+from nltk.stem import PorterStemmer 
+from nltk.tokenize import word_tokenize
+ps = PorterStemmer() 
 
+
+
+
+
+def get_local_diction(path):
+    res = {}
+    cur = 0
+    for lines in open(path):
+        res[lines.strip().split('\t')[0]] = cur
+        cur +=1
+    return res
+
+#for monica
+forbid_for_monica = get_local_diction('./dict/forbid_for_monica.dict')
 
 
 def get_embedding_dict(path,dim):
@@ -23,14 +40,6 @@ def get_embedding_dict(path,dim):
         for i in em_str:
             cur.append(float(i))
         res[data[0]] = cur
-    return res
-
-def get_local_diction(path):
-    res = {}
-    cur = 0
-    for lines in open(path):
-        res[lines.strip().split('\t')[0]] = cur
-        cur +=1
     return res
 
 def get_value_dict(path):
@@ -144,6 +153,15 @@ def judge(content_keywords,title_keywords,forbidden_ex,py):
     return 0
 
 
+def is_monica_adult(title):
+    doc = title.lower().split(' ')
+    for word in doc:
+        if word in forbid_for_monica:
+            return True,word
+    return False,''
+
+
+
 def process(model,idf_dict,embedding,dim,content,category,title,url,forbidden_strict,forbidden_nostrict,cate_dict,stopwords,fobidden_ex):
     '''
     main processing function：
@@ -177,6 +195,11 @@ def process(model,idf_dict,embedding,dim,content,category,title,url,forbidden_st
     #犯罪类，政府类排除
     if flag:
         label = 0
-    res = {'label':label,'score':py,'keywords':{'content_keywords':content_keywords,'title_keywords':title_keywords}}
+    title_stem = ' '.join([ps.stem(w) for w in title_words.keys()])
+    #title_stem = ' '.join([ps.stem(w) for w in word_tokenize(title)])
+    monica_adult_res ,monica_adult_word = is_monica_adult(title_stem)
+    res = {'label':label,'score':py,
+           'keywords':{'content_keywords':content_keywords,'title_keywords':title_keywords},
+           'is_monica_adult_title':monica_adult_res,'monica_adult_word':monica_adult_word}
 
     return res

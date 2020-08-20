@@ -76,7 +76,8 @@ class ProcessHandler(tornado.web.RequestHandler):
             if url == None:
                 url = ''
             args_dict = {'docid':docid,'title':title,'category':category,'url':url}
-            logArgs.info(str(args_dict))
+            #logArgs.info(str(args_dict))
+            logArgs.info(str(data_dict))
             #process
             result = process.process(model,idf_dict,embedding,300,content,category,title,url,forbidden_strict,forbidden_nostrict,cate_dict,stopwords,forbidden_ex)
             #result

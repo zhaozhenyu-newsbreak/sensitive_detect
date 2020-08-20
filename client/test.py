@@ -22,10 +22,11 @@ start = time.time()
 for lines in open(test_file):
     data = lines.strip().split('\t')
     docinfo = json.loads(data[2])
-    #docinfo['seg_title'] = docinfo['title']
-    #docinfo['seg_content'] = docinfo['content']
+    docinfo['seg_title'] = docinfo['title']
+    docinfo['seg_content'] = docinfo['content']
     return_info = requests.post(url_prefix,json = docinfo)
     return_dict = json.loads(return_info.text)
-    print(data[0]+'\t'+str(return_dict['label'])+'\t'+json.dumps(return_dict))
-
+    #print(data[0]+'\t'+str(return_dict['label'])+'\t'+json.dumps(return_dict))
+    if  return_dict['is_monica_adult_title']:
+        print(str(return_dict)+'\t'+lines.strip())
 print(time.time()-start)
