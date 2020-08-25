@@ -197,9 +197,11 @@ def process(model,idf_dict,embedding,dim,content,category,title,url,forbidden_st
         label = 0
     title_stem = ' '.join([ps.stem(w) for w in title_words.keys()])
     #title_stem = ' '.join([ps.stem(w) for w in word_tokenize(title)])
+    #title_stem_keywords = get_word_dict(title_stem.lower().split(' '),stopwords)
+    #title_stem = ' '.join(list(title_stem_keywords.keys()))
     monica_adult_res ,monica_adult_word = is_monica_adult(title_stem)
     res = {'label':label,'score':py,
            'keywords':{'content_keywords':content_keywords,'title_keywords':title_keywords},
-           'is_monica_adult_title':monica_adult_res,'monica_adult_word':monica_adult_word}
+           'is_adult_title':monica_adult_res,'adult_title_word':monica_adult_word}
 
     return res

@@ -61,9 +61,12 @@ class ProcessHandler(tornado.web.RequestHandler):
             docid = data_dict.get('docid')
             if docid ==None:
                 docid = 'no_id'
-            title = data_dict.get('seg_title')
+            title = data_dict.get('stitle')
             if title == None:
                 title = ''
+            #title_stem = data_dict.get('seg_title_stem')
+            #if title_stem == None:
+            #    title_stem = title
             content = data_dict.get('seg_content')
             if content == None:
                 content = ''
@@ -85,6 +88,9 @@ class ProcessHandler(tornado.web.RequestHandler):
             result["docid"] = docid
             response_dict_string = json.dumps(result, ensure_ascii=False)
             logOutput.info('server\t%s\t%s' % (docid, response_dict_string))
+            if 'adult_title_word' in result:
+                result.pop('adult_title_word')
+            response_dict_string = json.dumps(result, ensure_ascii=False)
             self.finish(response_dict_string)
         except Exception as e:
             msg = str(traceback.format_exc())
