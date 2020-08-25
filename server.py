@@ -61,7 +61,7 @@ class ProcessHandler(tornado.web.RequestHandler):
             docid = data_dict.get('docid')
             if docid ==None:
                 docid = 'no_id'
-            title = data_dict.get('stitle')
+            title = data_dict.get('seg_title')
             if title == None:
                 title = ''
             #title_stem = data_dict.get('seg_title_stem')
