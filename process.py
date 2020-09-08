@@ -139,6 +139,8 @@ def judge(content_keywords,title_keywords,forbidden_ex,py):
     t_n = len(title_keywords['nostrict'])
     c_s = len(content_keywords['strict'])
     c_n = len(content_keywords['nostrict'])
+    if t_s >=2 or c_s >=3:
+        return 1
     for k in forbidden_ex:
         if k in title_keywords['strict']:
             return 1
