@@ -118,7 +118,10 @@ def get_category_onehot(category,cate_dict):
     if cate!=None and ('Crime' in str(cate) or 'Politics' in str(cate)):
         return res,True
     if cate !=None:
-        first_cat = list(cate.keys())[0]
+        try:
+            first_cat = list(cate.keys())[0]
+        except:
+            return res,False
         if first_cat in cate_dict:
             res[cate_dict[first_cat]] = 1
     return res,False
